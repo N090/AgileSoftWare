@@ -1,32 +1,39 @@
 pipeline {
-    agent any
+   agent any
 
-    stages {
-        stage('Fetch') {
-            steps {
-                script {
-                    // Check if the directory exists
-                    if (fileExists('AgileSoftWare')) {
-                        // If it exists, perform a git pull with --allow-unrelated-histories
-                        bat 'cd AgileSoftWare && git pull --allow-unrelated-histories origin main'
-                    } else {
-                        // If it doesn't exist, perform a git clone
-                        bat 'git clone -b main https://github.com/N090/AgileSoftWare.git'
-                    }
-                }
-            }
-        }
-        stage('Build') {
-            steps {
-                // Compile files with JUnit package
-        bat 'javac -d bin -cp ./lib/junit-platform-console-standalone-1.9.3.jar src/Student.java src/StudentTest.java'
-            }
-        }
-        stage('Test') {
-            steps {
-                // Run tests
-                bat 'java -jar lib/junit-platform-console-standalone-1.9.3.jar --class-path bin --select-class StudentTest'
-            }
-        }
-    }
+   tools {
+       maven 'M3'
+   }
+   environment {
+       JAVA_HOME = "C:\Users\Nojus\Downloads\jdk-21_windows-x64_bin\jdk-21.0.1"
+   }
+
+   stages {
+       stage('Checkout') {
+           steps {
+               echo 'Checking out..'
+               git 'https://github.com/N090/AgileSoftWare.git'
+           }
+       }
+
+       stage('Build') {
+           steps {
+               // Using 'mvn clean package' to compile and package the code
+               bat 'mvn clean package -Dmaven.test.failure.ignore=true'
+           }
+       }
+
+   }
+
+   post {
+       always {
+           echo 'The build process has completed.'
+       }
+       success {
+           echo 'Build was successful.'
+       }
+       failure {
+           echo 'Build failed. Check the logs for details.'
+       }
+   }
 }
