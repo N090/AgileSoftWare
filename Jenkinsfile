@@ -5,7 +5,6 @@ pipeline {
         stage('Fetch') {
             steps {
                 script {
-                    // Check if the directory exists
                     if (fileExists('AgileSoftWare')) {
                         // If it exists, perform a git pull with --allow-unrelated-histories
                         dir('AgileSoftWare') {
