@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 pipeline {
    agent any
 
@@ -38,3 +39,58 @@ pipeline {
        }
    }
 }
+=======
+<<<<<<<< HEAD:Jenkinsfile
+pipeline {
+    agent any
+    stages {
+        stage('Fetch') {
+            steps {
+                script {
+                    // Check if the directory exists
+                    if (fileExists('AgileSoftWare')) {
+                        // If it exists, perform a git pull with --allow-unrelated-histories
+                        bat 'cd AgileSoftWare && git pull --allow-unrelated-histories origin main'
+                    } else {
+                        // If it doesn't exist, perform a git clone
+                        bat 'git clone -b main https://github.com/N090/AgileSoftWare.git'
+                    }
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                // Compile files with JUnit package
+                bat 'javac -d bin -cp ./lib/junit-platform-console-standalone-1.9.3.jar src/Student.java src/StudentTest.java'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Run tests
+                bat 'java -jar lib/junit-platform-console-standalone-1.9.3.jar --class-path bin --select-class StudentTest'
+            }
+        }
+    }
+}
+========
+pipeline {
+    agent any
+
+    stages {
+        stage('Fetch from Repository') {
+            steps {
+                // Replace the repository URL with your actual repository URL
+                git 'https://github.com/N090/AgileSoftWare.git'
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                // You can replace the following command with your build commands
+                sh 'mvn clean install'
+            }
+        }
+    }
+}
+>>>>>>>> fa50bcf6fca55abcd9117b6622068ba7bff219b3:Jenkinsfile.groovy
+>>>>>>> fa50bcf6fca55abcd9117b6622068ba7bff219b3
