@@ -5,14 +5,15 @@ pipeline {
        maven 'M3'
    }
    environment {
-       JAVA_HOME = "C:\Users\Nojus\Downloads\jdk-21_windows-x64_bin\jdk-21.0.1"
+       JAVA_HOME = "C:\\Users\\Nojus\\Downloads\\jdk-21_windows-x64_bin\\jdk-21.0.1"
    }
 
    stages {
        stage('Checkout') {
            steps {
                echo 'Checking out..'
-               git 'https://github.com/N090/AgileSoftWare.git'
+               // Specify the branch to checkout
+               git branch: 'main', url: 'https://github.com/N090/AgileSoftWare.git'
            }
        }
 
