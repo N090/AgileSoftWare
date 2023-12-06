@@ -1,6 +1,6 @@
-
 pipeline {
     agent any
+
     stages {
         stage('Fetch') {
             steps {
@@ -16,17 +16,19 @@ pipeline {
                 }
             }
         }
+
         stage('Build') {
             steps {
                 // Compile files with JUnit package
-                bat 'javac -d bin -cp ./lib/junit-platform-console-standalone-1.9.3.jar src/Student.java src/StudentTest.java'
+                bat 'javac -d bin -cp .;./lib/junit-platform-console-standalone-1.9.3.jar src/Student.java src/StudentTest.java'
             }
         }
+
         stage('Test') {
             steps {
                 script {
-                    // Using 'mvn test' to run tests
-                    sh 'mvn test'
+                    // Using 'java' to run tests
+                    bat 'java -jar ./lib/junit-platform-console-standalone-1.9.3.jar --class-path bin --select-class StudentTest'
                 }
             }
         }
