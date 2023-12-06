@@ -8,7 +8,9 @@ pipeline {
                     // Check if the directory exists
                     if (fileExists('AgileSoftWare')) {
                         // If it exists, perform a git pull with --allow-unrelated-histories
-                        bat 'cd AgileSoftWare && git pull --allow-unrelated-histories origin main'
+                        dir('AgileSoftWare') {
+                            bat 'git pull --allow-unrelated-histories origin main'
+                        }
                     } else {
                         // If it doesn't exist, perform a git clone
                         bat 'git clone -b main https://github.com/N090/AgileSoftWare.git'
