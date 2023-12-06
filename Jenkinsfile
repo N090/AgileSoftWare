@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     stages {
@@ -23,9 +24,23 @@ pipeline {
         }
         stage('Test') {
             steps {
-                // Run tests
-                bat 'java -jar lib/junit-platform-console-standalone-1.9.3.jar --class-path bin --select-class StudentTest'
+                script {
+                    // Using 'mvn test' to run tests
+                    sh 'mvn test'
+                }
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'The build process has completed.'
+        }
+        success {
+            echo 'Build was successful.'
+        }
+        failure {
+            echo 'Build failed. Check the logs for details.'
         }
     }
 }
